@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.fragment.app.FragmentContainerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+
+    android:name="androidx.navigation.fragment.NavHostFragment"
+    android:id="@+id/fragmentContainer"
+    app:navGraph="@navigation/nav_graph"
+    >
+    <!-- указать атрибуты выше -->
+
+    <!-- если несколько контейнеров (для мобильного, для планшета),
+        то указывать app:defaultNavHost="true" для 1 из них -->
+
+
+
+</androidx.fragment.app.FragmentContainerView>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:gravity="center"
+
+    tools:context=".RootFragment">
+    <!--    android:gravity="center"
+        полезно в layout, чтобы сразу все кнопки расположить по центру.
+
+        Также желательно прописать tools:context=".RootFragment",
+        т.к. в nav_graph сразу будут подгружаться макетные файлы
+        (а так только плейсхолдер)
+    -->
+
+    <Button
+        android:id="@+id/titleBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#008800"
+        android:text="Green Box (data - bundleOf)">
+
+
+    </Button>
+
+    <Button
+        android:id="@+id/openGreenBoxBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#008800"
+        android:text="Green Box (data - bundleOf)"/>
+
+
+    <Button
+        android:id="@+id/openGreenBoxClassicBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#008800"
+        android:text="Green Box (classic transfer, not Nav)"/>
+
+    <Button
+        android:id="@+id/openYellowBoxBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#ffff00"
+        android:textColor="@color/black"
+        android:text="Yellow Box (data - bundleOf)"/>
+
+</LinearLayout>
