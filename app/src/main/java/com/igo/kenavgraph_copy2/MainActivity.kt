@@ -2,6 +2,9 @@ package com.igo.kenavgraph_copy2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 
 
 // https://www.youtube.com/watch?v=tyxt87DX7mw
@@ -35,8 +38,17 @@ import android.os.Bundle
 // .
 
 class MainActivity : AppCompatActivity() {
+
+    //private lateinit var navController: NavController //for nav bar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //for nav bar
+        //val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainer) as NavHostFragment
+        //navController = navHost.navController
+        //NavigationUI.setupActionBarWithNavController(this, navController)
+
     }
 }

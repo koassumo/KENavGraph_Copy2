@@ -7,6 +7,7 @@
 
     android:orientation="vertical"
     android:gravity="center"
+    android:background="@color/white"
 
     tools:context=".RootFragment">
     <!--    android:gravity="center"
@@ -17,37 +18,110 @@
         (а так только плейсхолдер)
     -->
 
-    <Button
-        android:id="@+id/titleBtn"
+
+    <TextView
+        android:id="@+id/txtView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#008800"
-        android:text="Green Box (data - bundleOf)">
-
-
-    </Button>
-
-    <Button
-        android:id="@+id/openGreenBoxBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#008800"
-        android:text="Green Box (data - bundleOf)"/>
-
-
-    <Button
-        android:id="@+id/openGreenBoxClassicBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#008800"
-        android:text="Green Box (classic transfer, not Nav)"/>
-
-    <Button
-        android:id="@+id/openYellowBoxBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#ffff00"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="This is Root"
         android:textColor="@color/black"
-        android:text="Yellow Box (data - bundleOf)"/>
+        android:textSize="20sp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Direct #" />
+
+            <TextView
+                style="@style/MyTextViewStyleHeaderRow"
+                android:text="Fragment Transition" />
+
+            <TextView
+                style="@style/MyTextViewStyleHeaderRow"
+                android:text="Data Transfer" />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goForwardBoxYellow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Forward (1_1)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(1_) .navigate.R.id.action_" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:textColor="@color/yellow"
+                android:text="bundle (1. rgb + 2. 'yellow')" />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goForwardBoxGreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Forward (1_1)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(1_) .navigate.R.id.action_" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:textColor="@color/green"
+                android:text="bundle (1. rgb + 2. 'green')" />
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goForwardBoxClassic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Forward (1_1)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="classic transfer notNav notWork" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="_" />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+    </TableLayout>
+
+
+
 
 </LinearLayout>

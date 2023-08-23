@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/rootFragment"
         android:name="com.igo.kenavgraph_copy2.RootFragment"
-        android:label="fragment_root"
+        android:label="Root"
         tools:layout="@layout/fragment_root" >
         <action
             android:id="@+id/action_rootFragment_to_boxFragment"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/boxFragment"
         android:name="com.igo.kenavgraph_copy2.BoxFragment"
-        android:label="fragment_box"
+        android:label="Box"
         tools:layout="@layout/fragment_box" >
         <action
             android:id="@+id/action_boxFragment_to_secretFragment"
@@ -25,10 +25,13 @@
         <action
             android:id="@+id/action_boxFragment_to_rootFragment3"
             app:destination="@id/rootFragment" />
+        <argument
+            android:name="colorName"
+            app:argType="string" /> <!-- Тип аргумента для строки (а с color не работает)-->
     </fragment>
     <fragment
         android:id="@+id/secretFragment"
         android:name="com.igo.kenavgraph_copy2.SecretFragment"
-        android:label="fragment_secret"
+        android:label="Secret"
         tools:layout="@layout/fragment_secret" />
 </navigation>
