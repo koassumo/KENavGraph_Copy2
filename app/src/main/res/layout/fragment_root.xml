@@ -62,7 +62,7 @@
 
             <TextView
                 style="@style/MyTextViewStyleFirstColumn"
-                android:text="Forward (1_1)" />
+                android:text="* Forward (1_1)" />
 
             <TextView
                 style="@style/MyTextViewStyle1"
@@ -84,7 +84,7 @@
 
             <TextView
                 style="@style/MyTextViewStyleFirstColumn"
-                android:text="Forward (1_1)" />
+                android:text="* Forward (1_1)" />
 
             <TextView
                 style="@style/MyTextViewStyle1"

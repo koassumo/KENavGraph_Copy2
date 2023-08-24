@@ -34,7 +34,7 @@ class BoxFragment : Fragment(R.layout.fragment_box) {
 
         // Ловим данные, полученные из предыдущего фрагмента (из bundle)
         val color = requireArguments().getInt(ARG_COLOR)
-        val colorName = requireArguments().getString(ARG_COLOR_NAME)
+        val colorName = requireArguments().getString(ARG_COLOR_NAME)  // не путать .getInt, .getString
         binding.root.setBackgroundColor(color)
         Toast.makeText(requireContext(), "First arg: $color, second arg: $colorName", Toast.LENGTH_SHORT).show()
 
@@ -52,15 +52,16 @@ class BoxFragment : Fragment(R.layout.fragment_box) {
 
         // Options for data transfer:
         //      _0) ничего не передается
-        //      _1) bundleOf - можно только вверх по стеку, НО! нельзя обратно (ТРЭШ!!)
-        //      _2) .previousBackStackEntry? - встроенный в NavGraph метод (показан в следующем фрагменте), минус - переПРИНИМАЕТ данные при повороте экрана
+        //      _1) nav bundleOf - можно только вверх по стеку, НО! нельзя обратно (ТРЭШ!!)
+        //      _2)  .previousBackStackEntry? - встроенный в NavGraph метод, минус - переПРИНИМАЕТ данные при повороте экрана
+        //      _21) .previousBackStackEntry? - встроенный в NavGraph метод, обработан с помощью if чтобы не отображался повторно при повороте экрана
         //      _3) parentFragmentManager+popBackStack() - не NavGraph, но хороший способ
-        //      _) sharedVM - не рассматривается
-        //      _) плагин saveArguments - не рассматривается https://www.youtube.com/watch?v=q76ooLPJPsM
+        //      _) sharedViewModel - не рассматривается, данные переходят вперед и назад
+        //      _) плагин saveArguments - не рассматривается, данные переходят только вперед  https://www.youtube.com/watch?v=q76ooLPJPsM
         // Добавляем анимацию перехода
         //      - TODO
 
-        // Кнопка (1_0). На секрет-фрагмент
+        // Кнопка (1_0). ПЕРЕХОД На секрет-фрагмент
         binding.goForwardSecretNoData.setOnClickListener {
             openSecret()
         }
@@ -73,34 +74,59 @@ class BoxFragment : Fragment(R.layout.fragment_box) {
         }
 
 
-        // ПЕРЕХОД НАЗАД ПО POPBACKSTACK (без передачи данных)
-        // Кнопка (3_0)". Просто назад
+        // * Кнопка (3_0). Просто ПЕРЕХОД НАЗАД ПО POPBACKSTACK (без передачи данных)
         binding.goPopBackStackNoData.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        // ПЕРЕХОД НАЗАД ПО POPBACKSTACK (c передачей данных по методу _2)
-        // Кнопка (3_2)
+
+        // ДАЛЕЕ встроенный в Nav вариант передачи данных обратно по стеку (В ДВУХ ВАРИАНТАХ !!!)
+        // Минусы:
+        // - не особо читаемый код (?)
+        // - при повороте экрана данные приходят второй раз
+        // Отличие этих вариантах не в этом фрагменте, а в предыдущем фрагменте,
+        // где обрабатывается эта строка, которая отловливает данные:
+        // findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>(PREVIOUS_KEY)?.observe(viewLifecycleOwner) {}
+
+        // Кнопка (3_2) ПЕРЕХОД НАЗАД ПО POPBACKSTACK (c передачей данных по методу _2), без обработки данных при приеме
         binding.goPopBackStackAndNavData.setOnClickListener {
             val number = Random.nextInt(100)
-
-            // Т.е. ниже встроенный в Nav вариант передачи данных обратно по стеку.
-            // Минусы:
-            // - не особо читаемый код
-            // - при повороте экрана данные приходят второй раз
             findNavController().previousBackStackEntry?.savedStateHandle?.set(PREVIOUS_KEY, number)
             findNavController().popBackStack()
-            // а данную строку нужно вставить в предыдущем фрагменте, чтобы отловить данные:
-            // findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>(PREVIOUS_KEY)?.observe(viewLifecycleOwner) {}
         }
 
-        // Кнопка (3_3). Назад с передачей данных по методу по методу #3
+        // * Кнопка (3_21)
+        // ПЕРЕХОД НАЗАД ПО POPBACKSTACK (c передачей данных по методу _21), но с обработкой данных при приеме
+        binding.goPopBackStackAndNavDataProcessed.setOnClickListener {
+            val number = Random.nextInt(100)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(PREVIOUS_KEY_PROCESSED, number)
+            findNavController().popBackStack()
+
+//          For transfer several arguments use bundle:
+//            val args = Bundle().apply {
+//                putInt(ARG_NUMBER1, 100)
+//                putString(ARG_TEXT, "Some text")
+//                putBoolean(ARG_FLAG, true)
+//                putFloat(ARG_FLOAT, 3.14f)
+//            }
+//
+//            findNavController().previousBackStackEntry?.savedStateHandle?.set(PREVIOUS_ARGS_KEY, args)
+//            findNavController().popBackStack()
+
+
+        }
+
+
+
+        // Кнопка (3_3). Назад с передачей данных по методу по методу _3
         binding.goPopBackStackAndAsideData.setOnClickListener {
             val number = Random.nextInt(100)
             // передача данных "назад" здесь идет более удобным, чем встроенный способ:
             parentFragmentManager.setFragmentResult(REQUEST_CODE, bundleOf(REQUEST_CODE_EXTRA to number))
             findNavController().popBackStack()
         }
+
+
 
         // Кнопка (31_0) "Назад" физическая
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {

@@ -95,7 +95,7 @@
 
             <TextView
                 style="@style/MyTextViewStyleFirstColumn"
-                android:text="Back (3_0)" />
+                android:text="* Back (3_0)" />
 
             <TextView
                 style="@style/MyTextViewStyle1"
@@ -120,7 +120,28 @@
 
             <TextView
                 style="@style/MyTextViewStyle1"
-                android:text="(3_) .popBackStack()" />
+                android:text="(3_) .popBackStack() turn screen - not PROCESSED DATA ->" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="(_2) nav .previousBackStackEntry? .savedStateHandle?." />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goPopBackStackAndNavDataProcessed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="* Back (3_21)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(3_) .popBackStack() turn screen - PROCESSED DATA ->" />
 
             <TextView
                 style="@style/MyTextViewStyle2"
@@ -158,7 +179,7 @@
 
             <TextView
                 style="@style/MyTextViewStyleFirstColumn"
-                android:text="Back (31_0)" />
+                android:text="* Back (31_0)" />
 
             <TextView
                 style="@style/MyTextViewStyle1"

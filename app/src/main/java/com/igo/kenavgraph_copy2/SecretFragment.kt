@@ -25,7 +25,7 @@ class SecretFragment : Fragment(R.layout.fragment_secret) {
             findNavController().popBackStack()
         }
 
-        // Кнопка (4_0) Переход popBackStack, но в конкретный destination
+        // * Кнопка (4_0) Переход popBackStack, но в конкретный destination
         binding.goDestinationNoData.setOnClickListener {
             findNavController().popBackStack(R.id.rootFragment, false)
         }
