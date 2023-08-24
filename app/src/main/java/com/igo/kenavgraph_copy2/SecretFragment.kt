@@ -15,9 +15,19 @@ class SecretFragment : Fragment(R.layout.fragment_secret) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSecretBinding.bind(requireView())
 
-        // Кнопка "Назад" физическая
+        // Кнопка (3_0) Переход назад
+        binding.goPopBackStackNoData.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        // Кнопка (31_0) "Назад" физическая
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             findNavController().popBackStack()
+        }
+
+        // * Кнопка (4_0) Переход popBackStack, но в конкретный destination
+        binding.goDestinationNoData.setOnClickListener {
+            findNavController().popBackStack(R.id.rootFragment, false)
         }
 
     }

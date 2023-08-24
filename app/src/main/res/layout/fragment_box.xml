@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
 
     tools:context=".BoxFragment">
 
@@ -14,40 +13,194 @@
         android:id="@+id/txtView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
         android:fontFamily="casual"
         android:gravity="center"
+        android:text="This is a Box"
         android:textColor="@color/black"
-        android:text="This is a Box"/>
+        android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/goBackBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go Back"/>
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Direct #" />
+
+            <TextView
+                style="@style/MyTextViewStyleHeaderRow"
+                android:text="Fragment Transition" />
+
+            <TextView
+                style="@style/MyTextViewStyleHeaderRow"
+                android:text="Data Transfer" />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goForwardSecretNoData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Forward (1_0)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(1_) .navigate .R.id.action_ Secret" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="no data" />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goBackLikeForwardNoData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Back (1_0)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(1_) back like forward- .navigate.R.id.action_" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="no data" />
+
+        </TableRow>
+
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goPopBackStackNoData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="* Back (3_0)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(3_) .popBackStack()" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="no data" />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goPopBackStackAndNavData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Back (3_2)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(3_) .popBackStack() turn screen - not PROCESSED DATA ->" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="(_2) nav .previousBackStackEntry? .savedStateHandle?." />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goPopBackStackAndNavDataProcessed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="* Back (3_21)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(3_) .popBackStack() turn screen - PROCESSED DATA ->" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="(_2) nav .previousBackStackEntry? .savedStateHandle?." />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:id="@+id/goPopBackStackAndAsideData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="Back (3_3)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(3_) .popBackStack()" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="(_3) not nav .fragmentResult bundle" />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MyTextViewStyleFirstColumn"
+                android:text="* Back (31_0)" />
+
+            <TextView
+                style="@style/MyTextViewStyle1"
+                android:text="(31_) like 3_0 but physical button" />
+
+            <TextView
+                style="@style/MyTextViewStyle2"
+                android:text="no data" />
+
+        </TableRow>
+
+        <View style="@style/DividerViewStyle" />
+
+    </TableLayout>
+
 
     <Button
         android:id="@+id/openSecretBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Open secret"/>
+        android:text="Open secret" />
 
-    <Button
-        android:id="@+id/generateNumberBtn0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go Back - Generate number (#2. back data - .previousBackStackEntry?)"/>
-
-    <Button
-        android:id="@+id/generateNumberBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go Back - Generate number (#3. back data - fragmentResult)"/>
-
-    <Button
-        android:id="@+id/goBackLikeForwardNewNavActionBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go Back - LikeForwardNewNavActionBtn"/>
 
 </LinearLayout>

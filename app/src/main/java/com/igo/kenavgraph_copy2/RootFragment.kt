@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ import com.igo.kenavgraph_copy2.databinding.FragmentRootBinding
 class RootFragment : Fragment(R.layout.fragment_root) {
 
     private lateinit var binding: FragmentRootBinding
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,75 +35,129 @@ class RootFragment : Fragment(R.layout.fragment_root) {
         // указать (requireView()) - универсальный вариант.
         // вообще здесь передача fragment была через конструктор, поэтому было бы достаточно указать просто (view)
 
-        // Кнопка 1. Зеленый
-        binding.openGreenBoxBtn.setOnClickListener {
-            openBox(Color.rgb(200, 255, 200))
+
+        // Options for fragment transition:
+        //      (1_ переход по action (рекомендован),
+        //      (2_ переход по destination (не пробовал),
+        //      (3_ переход обратно по стеку .popBackStack() на 1 уровень - (показан в следующем фрагменте)
+        //      (4_ переход обратно по стеку .popBackStack(), но в конкретный destination - (показан в следующем фрагменте)
+        //      (5_ переход обратно по .navigateUp() Отличие от popBackStack: 1.Не закрывает app из root. 2. При вызове из др.проги на непервый фрагмент, не уходит в нее.
+
+        // Options for data transfer:
+        //      _0) ничего не передается
+        //      _1) bundleOf (ниже в примере) - можно только вверх по стеку, НО! нельзя обратно (ТРЭШ!!)
+        //      _2)  .previousBackStackEntry? - встроенный в NavGraph метод, минус - переПРИНИМАЕТ данные при повороте экрана
+        //      _21) .previousBackStackEntry? - встроенный в NavGraph метод, обработан с помощью if чтобы не отображался повторно при повороте экрана
+        //      _3) parentFragmentManager+popBackStack() - не NavGraph, но хороший способ
+        //      _) sharedViewModel - не рассматривается, данные переходят вперед и назад
+        //      _) плагин saveArguments - не рассматривается, данные переходят только вперед  https://www.youtube.com/watch?v=q76ooLPJPsM
+        // Добавляем анимацию перехода
+        //      - TODO
+
+
+//=============   ВЫХОД В ДРУГОЙ ФРАГМЕНТ ==================================================================================
+
+        //  * Стандартный переход nav_graph и стандартная nav_graph передача данных
+
+        // Line (1_1). Yellow
+        binding.goForwardBoxYellow.setOnClickListener {
+            openBox(Color.rgb(255, 255, 200), "yellow")
         }
 
-//        // Кнопка 1.2. Зеленый (классический переход)
-//        binding.openGreenBoxClassicBtn.setOnClickListener {
-//            openBoxClassic(Color.rgb(255, 255, 200))
+        // Line (1_1). Green
+        binding.goForwardBoxGreen.setOnClickListener {
+            openBox(Color.rgb(200, 255, 200), "green")
+        }
+
+//   // Классический переход (не Nav_Graph)
+//        // Кнопка . Зеленый
+//        binding.goForwardBoxClassic.setOnClickListener {
+//            val color: Int = Color.rgb(255, 255, 200)
+//            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragmentContainer, BoxFragment())?.addToBackStack(null)?.commit()
 //        }
 
-        // Кнопка 2. Желтый
-        binding.openYellowBoxBtn.setOnClickListener {
-            openBox(Color.rgb(255, 255, 200))
-        }
 
-
-        // Здесь отлавливаем передаваемые данные при возврате с последующего экрана (по методу #2)
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>("key")?.observe(viewLifecycleOwner) {
-            val number = it + 1000
-            Toast.makeText(requireContext(), "Random number: $number", Toast.LENGTH_SHORT).show()
-        }
-
-        // Здесь отлавливаем передаваемые данные при возврате с последующего экрана (по методу #3)
-        parentFragmentManager.setFragmentResultListener(BoxFragment.REQUEST_CODE, viewLifecycleOwner) { _, data ->
-            val number = data.getInt(BoxFragment.EXTRA_RANDOM_NUMBER)
-            Toast.makeText(requireContext(), "Random number: $number", Toast.LENGTH_SHORT).show()
-        }
-
-        // Кнопка "Назад" физическая
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            findNavController().popBackStack()
+        // * Кнопка "Назад" физическая
+        callback = requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            val navController = findNavController()
+            if (navController.currentDestination?.id != R.id.rootFragment) {
+                navController.popBackStack()
+            } else {
+                // Если находимся в корневом фрагменте, то здесь вы можете выполнить
+                // определенные действия или ничего не делать, чтобы предотвратить
+                // закрытие приложения
+            }
         }
         callback.isEnabled = true
 
+
+//================ ВХОД ИЗ ДРУГОГО ФРАГМЕНТА ==================================================================================
+
+      // СНАЧАЛА встроенный Nav метод (liveData) в двух вариантах:
+
+        // (_2) Здесь отлавливаем передаваемые данные при возврате с последующего экрана (по методу _2), БЕЗ ОБРАБОТКИ ДАННЫХ !!!
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>(PREVIOUS_KEY)?.observe(viewLifecycleOwner) {
+            val number = it
+            Toast.makeText(requireContext(), "Random number NOT processed: $number", Toast.LENGTH_SHORT).show()
+        }
+
+        // (_21) Здесь отлавливаем передаваемые данные при возврате с последующего экрана (по методу _21), С ОБРАБОТКОЙ ДАННЫХ !!!
+        val liveData = findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>(PREVIOUS_KEY_PROCESSED)
+        liveData?.observe(viewLifecycleOwner) {number ->
+            if (number != null) {               // при null не отображаем
+                Toast.makeText(requireContext(),"Random number PROCESSED: $number", Toast.LENGTH_SHORT).show()
+                liveData.value = null           // после отображения обнуляем
+            }
+
+//          To get several arguments from bundle
+//            findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(PREVIOUS_ARGS_KEY)?.observe(viewLifecycleOwner) { args ->
+//                val number = args.getInt(ARG_NUMBER1)
+//                val text = args.getString(ARG_TEXT)
+//                val flag = args.getBoolean(ARG_FLAG)
+//                val floatValue = args.getFloat(ARG_FLOAT)
+
+        }
+
+
+        // (_3) Здесь отлавливаем передаваемые данные при возврате с последующего экрана (по методу _3)
+        parentFragmentManager.setFragmentResultListener(REQUEST_CODE, viewLifecycleOwner) {_, data ->
+            val number = data.getInt(REQUEST_CODE_EXTRA)
+            Toast.makeText(requireContext(), "Random: $number", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
-    // метод для перехода тут общий, т.к. различие по кнопкам только в цвете
-    private fun openBox (color: Int) {
 
-        // A) Вызываем КОНТРОЛЛЕР
-        // B) Делаем переход. Три способа:
-        //      1) переход по action (рекомендован),
-        //      2) переход по destination (не пробовал),
-        //      3) переход обратно по стеку .popBackStack() - (показан в следующем фрагменте)
-        // С) Передаем данные. Три способа:
-        //      #1) bundleOf (ниже в примере) - можно только вверх по стеку, НО! нельзя обратно (ТРЭШ!!)
-        //      #2) .previousBackStackEntry? - встроенный в NavGraph метод (показан в следующем фрагменте), минус - переПРИНИМАЕТ данные при повороте экрана
-        //      #3) parentFragmentManager+popBackStack() - не NavGraph, но хороший способ
-        //      #4) sharedVM - не рассматривается
-        // D) Добавляем анимацию перехода
-        //      - TODO
+
+
+
+    // метод для перехода тут общий, т.к. различие по кнопкам только в цвете
+    private fun openBox(color: Int, colorName: String) {
+        // Toast.makeText(requireContext(), "1 arg: $color, 2 arg: $colorName", Toast.LENGTH_SHORT).show()
 
         // ---1--- Это ПЕРЕХОД ПО ACTIONS (Используем везде где возможно)
         // !!! ВЫБОР: для перехода и для передачи вверх
+        // A) Вызываем КОНТРОЛЛЕР
+        // B) Делаем переход ПО ACTIONS.
         findNavController().navigate(
-            R.id.action_rootFragment_to_boxFragment,            // переход по action
-            bundleOf(BoxFragment.ARG_COLOR to color       // передача данных вверх по стеку
-                                                                // можно через "запятую" еще и анимацию перехода добавить
+            R.id.action_rootFragment_to_boxFragment,             // переход по action
+            bundleOf(
+                ARG_COLOR to color,                   // передача данных вверх по стеку 1го аргумента
+                ARG_COLOR_NAME to colorName           // передача данных вверх по стеку 2го аргумента - его обязательно нужно прописать в nav_graph
             )
+//            ,                                         // можно через "запятую" еще и анимацию перехода добавить
+//            navOptions {
+//                anim {
+//                    enter = androidx.transition.R.anim.fragment_close_enter
+//                    exit = com.google.android.material.R.anim.abc_fade_in
+//                }
+//            }
         )
     }
 
-
-//    // Classic way for compare:
-//    private fun openBoxClassic (color: Int) {
-//            activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.fragmentContainer, BoxFragment())?.addToBackStack(null)?.commit()
-//    }
-
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        callback.isEnabled = false      //для избежания проблем с утечкой памяти
+    }
 
 }
